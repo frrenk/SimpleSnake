@@ -2,6 +2,11 @@ package game;
 
 import java.util.*;
 
+/* Controllable snake
+@param body: body of the snake made out of Piece object
+@param direction: direction in which the snake will move
+@param ate: flags the snake to grow a new piece
+ */
 public class Snake {
     private List<Piece> body;
     private Direction direction;
@@ -36,7 +41,7 @@ public class Snake {
     }
 
     //check if snake ate an apple, change ate to true.
-    public boolean eatApple(Piece piece) {
+    public boolean eatsApple(Piece piece) {
         if (getHead().getX()==piece.getX() && getHead().getY()==piece.getY()) {
             ate=true;
             return true;
@@ -45,11 +50,9 @@ public class Snake {
     }
 
     //check if snake hit itself
-    public boolean eatItself() {
-        for (Piece part:body) {
-            if (!(part.equals(getHead()))) {
-                if (part.getX()==getHead().getX() && part.getY()==getHead().getY()) return true;
-            }
+    public boolean eatsItself() {
+        for (int i = 0; i<body.size()-1; i++) {
+            if (body.get(i).getX()==getHead().getX() && body.get(i).getY()==getHead().getY()) return true;
         }
         return false;
     }
@@ -63,33 +66,41 @@ public class Snake {
     public void move() {
         if (getLength()<3||ate) {
             switch (direction)  {
+
                 case UP:
                     body.add(new Piece(getHead().getX(), getHead().getY()-1));
                     break;
+
                 case DOWN:
                     body.add(new Piece(getHead().getX(), getHead().getY()+1));
                     break;
+
                 case LEFT:
                     body.add(new Piece(getHead().getX()-1, getHead().getY()));
                     break;
+
                 case RIGHT:
                     body.add(new Piece(getHead().getX()+1, getHead().getY()));
             }
             ate = false;
         } else {
             switch (direction)  {
+
                 case UP:
                     body.remove(0);
                     body.add(new Piece(getHead().getX(), getHead().getY()-1));
                     break;
+
                 case DOWN:
                     body.remove(0);
                     body.add(new Piece(getHead().getX(), getHead().getY()+1));
                     break;
+
                 case LEFT:
                     body.remove(0);
                     body.add(new Piece(getHead().getX()-1, getHead().getY()));
                     break;
+
                 case RIGHT:
                     body.remove(0);
                     body.add(new Piece(getHead().getX()+1, getHead().getY()));
